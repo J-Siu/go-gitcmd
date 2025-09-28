@@ -20,7 +20,7 @@ func TestGitRoot_hasSubmodule(t *testing.T) {
 	//		git submodule add -f https://github.com/J-Siu/submodule_test_1
 	args = []string{"submodule", "add", "-f", "https://github.com/J-Siu/submodule_test_1"}
 	myCmd = cmd.Run("git", &args, nil)
-	ezlog.Log().NameLn(title).Msg(myCmd)
+	ezlog.Log().NameLn(title).Msg(myCmd).Out()
 	if myCmd.Stderr.Len() > 0 {
 		ezlog.Log().Name(title).Name("Stderr").Msg(myCmd.Stderr).Out()
 	}
@@ -31,7 +31,7 @@ func TestGitRoot_hasSubmodule(t *testing.T) {
 	//   git submodule update --recursive --init
 	args = []string{"submodule", "update", "--recursive", "--init"}
 	myCmd = cmd.Run("git", &args, nil)
-	ezlog.Log().NameLn(title).Msg(myCmd)
+	ezlog.Log().NameLn(title).Msg(myCmd).Out()
 	if myCmd.Stderr.Len() > 0 {
 		ezlog.Log().Name(title).Name("Stderr").Msg(myCmd.Stderr).Out()
 	}
