@@ -6,6 +6,8 @@
   - Initial commit
 - v0.0.2
   - Fix output
+- v0.0.3
+  - Update go-helper/v2
 
 ## License
 
