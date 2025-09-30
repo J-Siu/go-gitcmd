@@ -8,6 +8,8 @@
   - Fix output
 - v0.0.3
   - Update go-helper/v2
+- v0.0.4
+  - Update go-helper/v2
 
 ## License
 
