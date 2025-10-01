@@ -10,6 +10,8 @@
   - Update go-helper/v2
 - v0.0.4
   - Update go-helper/v2
+- v0.0.5
+  - Update go-helper/v2
 
 ## License
 
