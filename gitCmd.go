@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+// Provide git command using exec.Cmd wrapper go-helper/v2/cmd
 package gitcmd
 
 import (
@@ -128,7 +129,7 @@ func GitRemoteAdd(workPathP *string, name string, git string) *cmd.Cmd {
 //   - If <workPathP> is empty/nil, current directory is used.
 func GitRemoteExist(workPathP *string, name string) bool {
 	r := GitRemote(workPathP, false)
-	return str.ArrayContains(r, &name)
+	return str.ArrayContains(r, &name, false)
 }
 
 // Run "git remote remove".
