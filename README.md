@@ -39,21 +39,6 @@ func GitRootSubmodule(workPathP *string) string
 
 - [go-gitcmd](https://github.com/J-Siu/go-gitcmd)
 
-### Change Log
-
-- v0.0.1
-  - Initial commit
-- v0.0.2
-  - Fix output
-- v0.0.3
-  - Update go-helper/v2
-- v0.0.4
-  - Update go-helper/v2
-- v0.0.5
-  - Update go-helper/v2
-- v1.0.0
-  - Update go-helper/v2
-
 ### License
 
 The MIT License (MIT)
