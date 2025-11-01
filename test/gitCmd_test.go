@@ -20,24 +20,14 @@ func TestGitRoot_hasSubmodule(t *testing.T) {
 	//		git submodule add -f https://github.com/J-Siu/submodule_test_1
 	args = []string{"submodule", "add", "-f", "https://github.com/J-Siu/submodule_test_1"}
 	myCmd = cmd.Run("git", &args, nil)
-	ezlog.Log().Nn(title).M(myCmd).Out()
-	if myCmd.Stderr.Len() > 0 {
-		ezlog.Log().N(title).N("Stderr").M(myCmd.Stderr).Out()
-	}
-	if myCmd.Stdout.Len() > 0 {
-		ezlog.Log().N(title).N("Stdout").M(myCmd.Stdout).Out()
-	}
+	ezlog.Log().N(title).Lm(myCmd).Out()
+	myCmd.Log(title)
 
 	//   git submodule update --recursive --init
 	args = []string{"submodule", "update", "--recursive", "--init"}
 	myCmd = cmd.Run("git", &args, nil)
-	ezlog.Log().Nn(title).M(myCmd).Out()
-	if myCmd.Stderr.Len() > 0 {
-		ezlog.Log().N(title).N("Stderr").M(myCmd.Stderr).Out()
-	}
-	if myCmd.Stdout.Len() > 0 {
-		ezlog.Log().N(title).N("Stdout").M(myCmd.Stdout).Out()
-	}
+	ezlog.Log().N(title).Lm(myCmd).Out()
+	myCmd.Log(title)
 
 	// Test
 	//		testDir should be set to a git submodule directory.

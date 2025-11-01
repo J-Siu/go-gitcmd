@@ -6,7 +6,6 @@ Provide git command using exec.Cmd wrapper [go-helper](https://github.com/J-Siu/
 - [Package Functions](#package-functions)
 - [Doc](#doc)
 - [Repository](#repository)
-- [Change Log](#change-log)
 - [License](#license)
 <!-- /TOC -->
 <!--more-->
