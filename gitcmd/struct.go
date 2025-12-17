@@ -53,7 +53,7 @@ func (t *GitCmd) Clone(optionsP *[]string) *cmd.Cmd {
 	if optionsP != nil {
 		args = append(args, *optionsP...)
 	}
-	return t.run(&args)
+	return t.Run(&args)
 }
 
 // Check git executable exist.
@@ -75,14 +75,14 @@ func (t *GitCmd) ExecPath() string {
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
 func (t *GitCmd) Init() *cmd.Cmd {
-	return t.run(&[]string{"init"})
+	return t.Run(&[]string{"init"})
 }
 
 // Run "git branch --show-current".
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
 func (t *GitCmd) BranchCurrent() *cmd.Cmd {
-	return t.run(&[]string{"branch", "--show-current"})
+	return t.Run(&[]string{"branch", "--show-current"})
 }
 
 // Run "git pull <optionsP>".
@@ -93,7 +93,7 @@ func (t *GitCmd) Pull(optionsP *[]string) *cmd.Cmd {
 	if optionsP != nil {
 		args = append(args, *optionsP...)
 	}
-	return t.run(&args)
+	return t.Run(&args)
 }
 
 // Run "git push <optionsP>".
@@ -104,7 +104,7 @@ func (t *GitCmd) Push(optionsP *[]string) *cmd.Cmd {
 	if optionsP != nil {
 		args = append(args, *optionsP...)
 	}
-	return t.run(&args)
+	return t.Run(&args)
 
 }
 
@@ -118,7 +118,7 @@ func (t *GitCmd) Remote(v bool) *[]string {
 	} else {
 		args = []string{"remote"}
 	}
-	output := t.run(&args).Stdout.String()
+	output := t.Run(&args).Stdout.String()
 	return str.LnSplit(&output)
 }
 
@@ -126,7 +126,7 @@ func (t *GitCmd) Remote(v bool) *[]string {
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
 func (t *GitCmd) RemoteAdd(name string, gitUrl string) *cmd.Cmd {
-	return t.run(&[]string{"remote", "add", name, gitUrl})
+	return t.Run(&[]string{"remote", "add", name, gitUrl})
 }
 
 // Check if a git remote(by name) exist in workPathP.
@@ -141,7 +141,7 @@ func (t *GitCmd) RemoteExist(name string) bool {
 //   - If remote exist Return a cmd.Cmd pointer for execution information.
 //   - If remote does not exit, return nil.(Nothing to remove)
 func (t *GitCmd) RemoteRemove(name string) *cmd.Cmd {
-	return t.run(&[]string{"remote", "remove", name})
+	return t.Run(&[]string{"remote", "remove", name})
 }
 
 // Run "git remote remove" all git remotes
@@ -180,7 +180,7 @@ func (t *GitCmd) Root() string {
 		}
 	}
 	// Check git root
-	cmd = git.New(&currentPath).run(&opts)
+	cmd = git.New(&currentPath).Run(&opts)
 	if cmd.Err != nil {
 		return ""
 	}
@@ -193,7 +193,7 @@ func (t *GitCmd) Root() string {
 func (t *GitCmd) RootSubmodule() string {
 	var (
 		opts = []string{"rev-parse", "--show-superproject-working-tree"}
-		cmd  = t.run(&opts)
+		cmd  = t.Run(&opts)
 	)
 	if cmd.Err != nil {
 		return ""
@@ -201,9 +201,22 @@ func (t *GitCmd) RootSubmodule() string {
 	return strings.TrimSpace(cmd.Stdout.String())
 }
 
-// run "git <optionsP>".
+func (t *GitCmd) Tag() *[]string {
+	var (
+		opts = []string{"tag"}
+		cmd  = t.Run(&opts)
+		out  []string
+	)
+	if cmd.Err != nil {
+		return nil
+	}
+	out = strings.Split(strings.Trim(t.Stdout.String(), "\n"), "\n")
+	return &out
+}
+
+// Run "git <optionsP>".
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func (t *GitCmd) run(optionsP *[]string) *cmd.Cmd {
+func (t *GitCmd) Run(optionsP *[]string) *cmd.Cmd {
 	return t.Cmd.New("git", optionsP, t.workPathP).Run()
 }

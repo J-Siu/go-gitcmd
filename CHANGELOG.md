@@ -17,3 +17,5 @@
 - v2.0.0
   - package gitcmd folder
   - provide GitCmd struct
+- v2.0.1
+  - add Tag()

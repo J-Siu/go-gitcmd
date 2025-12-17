@@ -113,3 +113,5 @@ func Root(workPathP *string) string { return git.New(workPathP).Root() }
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return empty string if not a submodule dir.
 func RootSubmodule(workPathP *string) string { return git.New(workPathP).RootSubmodule() }
+
+func Tag(workPathP *string) *[]string { return git.New(workPathP).Tag() }
