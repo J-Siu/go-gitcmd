@@ -23,5 +23,5 @@ THE SOFTWARE.
 package gitcmd
 
 const (
-	Version = "v1.0.2"
+	Version = "v2.0.o"
 )

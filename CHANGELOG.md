@@ -14,3 +14,6 @@
   - update go-helper/v2
 - v1.0.2
   - update go-helper/v2
+- v2.0.0
+  - package gitcmd folder
+  - provide GitCmd struct

@@ -34,32 +34,36 @@ import (
 	"github.com/J-Siu/go-helper/v2/str"
 )
 
-// Run "git <optionsP>".
-//   - If <workPathP> is empty/nil, current directory is used.
-//   - Return a cmd.Cmd pointer for execution information.
-func Git(workPathP *string, optionsP *[]string) *cmd.Cmd {
-	return cmd.Run("git", optionsP, workPathP)
+type GitCmd struct {
+	*cmd.Cmd
+	workPathP *string
+}
+
+func (t *GitCmd) New(workPathP *string) *GitCmd {
+	t.Cmd = new(cmd.Cmd)
+	t.workPathP = workPathP
+	return t
 }
 
 // Run "git clone <optionsP>".
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func GitClone(workPathP *string, optionsP *[]string) *cmd.Cmd {
+func (t *GitCmd) Clone(optionsP *[]string) *cmd.Cmd {
 	args := []string{"clone"}
 	if optionsP != nil {
 		args = append(args, *optionsP...)
 	}
-	return Git(workPathP, &args)
+	return t.run(&args)
 }
 
 // Check git executable exist.
-func GitExecExist() bool {
-	return GitExecPath() != ""
+func (t *GitCmd) ExecExist() bool {
+	return t.ExecPath() != ""
 }
 
 // Get git executable path.
 //   - Return empty string if not found.
-func GitExecPath() string {
+func (t *GitCmd) ExecPath() string {
 	path, err := exec.LookPath("git")
 	if err != nil {
 		return ""
@@ -70,65 +74,65 @@ func GitExecPath() string {
 // Run "git init".
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func GitInit(workPathP *string) *cmd.Cmd {
-	return Git(workPathP, &[]string{"init"})
+func (t *GitCmd) Init() *cmd.Cmd {
+	return t.run(&[]string{"init"})
 }
 
 // Run "git branch --show-current".
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func GitBranchCurrent(workPathP *string) *cmd.Cmd {
-	return Git(workPathP, &[]string{"branch", "--show-current"})
+func (t *GitCmd) BranchCurrent() *cmd.Cmd {
+	return t.run(&[]string{"branch", "--show-current"})
 }
 
 // Run "git pull <optionsP>".
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func GitPull(workPathP *string, optionsP *[]string) *cmd.Cmd {
+func (t *GitCmd) Pull(optionsP *[]string) *cmd.Cmd {
 	args := []string{"pull"}
 	if optionsP != nil {
 		args = append(args, *optionsP...)
 	}
-	return Git(workPathP, &args)
+	return t.run(&args)
 }
 
 // Run "git push <optionsP>".
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func GitPush(workPathP *string, optionsP *[]string) *cmd.Cmd {
+func (t *GitCmd) Push(optionsP *[]string) *cmd.Cmd {
 	args := []string{"push"}
 	if optionsP != nil {
 		args = append(args, *optionsP...)
 	}
-	return Git(workPathP, &args)
+	return t.run(&args)
 
 }
 
 // Run "git remote".
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return remotes in string array.
-func GitRemote(workPathP *string, v bool) *[]string {
+func (t *GitCmd) Remote(v bool) *[]string {
 	var args []string
 	if v {
 		args = []string{"remote", "-v"}
 	} else {
 		args = []string{"remote"}
 	}
-	output := cmd.Run("git", &args, workPathP).Stdout.String()
+	output := t.run(&args).Stdout.String()
 	return str.LnSplit(&output)
 }
 
 // Run "git remote add <name> <git>".
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func GitRemoteAdd(workPathP *string, name string, git string) *cmd.Cmd {
-	return Git(workPathP, &[]string{"remote", "add", name, git})
+func (t *GitCmd) RemoteAdd(name string, gitUrl string) *cmd.Cmd {
+	return t.run(&[]string{"remote", "add", name, gitUrl})
 }
 
-// Check if a git remote(by name) exist in workPath.
+// Check if a git remote(by name) exist in workPathP.
 //   - If <workPathP> is empty/nil, current directory is used.
-func GitRemoteExist(workPathP *string, name string) bool {
-	r := GitRemote(workPathP, false)
+func (t *GitCmd) RemoteExist(name string) bool {
+	r := t.Remote(false)
 	return str.ArrayContains(r, &name, false)
 }
 
@@ -136,52 +140,70 @@ func GitRemoteExist(workPathP *string, name string) bool {
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - If remote exist Return a cmd.Cmd pointer for execution information.
 //   - If remote does not exit, return nil.(Nothing to remove)
-func GitRemoteRemove(workPathP *string, name string) *cmd.Cmd {
-	return Git(workPathP, &[]string{"remote", "remove", name})
+func (t *GitCmd) RemoteRemove(name string) *cmd.Cmd {
+	return t.run(&[]string{"remote", "remove", name})
 }
 
 // Run "git remote remove" all git remotes
 //   - If <workPathP> is empty/nil, current directory is used.
-func GitRemoteRemoveAll(workPathP *string) {
-	gr := GitRemote(workPathP, false)
+func (t *GitCmd) RemoteRemoveAll() {
+	gr := t.Remote(false)
 	for _, r := range *gr {
-		GitRemoteRemove(workPathP, r)
+		t.RemoteRemove(r)
 	}
 }
 
 // Get git root from current directory.
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return empty string if not a git dir.
-func GitRoot(workPathP *string) string {
-	if *workPathP == "" {
-		file.CurrentPath()
+func (t *GitCmd) Root() string {
+	var (
+		cmd  *cmd.Cmd
+		git  = new(GitCmd)
+		opts = []string{"rev-parse", "--show-toplevel"}
+
+		currentPath   string
+		submodulePath string
+		workPathP     = t.workPathP
+	)
+	if *t.workPathP == "" {
+		workPathP = file.CurrentPath()
 	}
 	// Check submodule path repeatedly
-	var submodulePath string = *workPathP
-	var currentPath string = *workPathP
+	submodulePath = *workPathP
+	currentPath = *workPathP
 	for submodulePath != "" {
-		submodulePath = GitRootSubmodule(&submodulePath)
+		git.New(&submodulePath)
+		submodulePath = git.RootSubmodule()
 		if submodulePath != "" {
 			currentPath = submodulePath
 		}
 	}
 	// Check git root
-	var opts []string = []string{"rev-parse", "--show-toplevel"}
-	var c = cmd.Run("git", &opts, &currentPath)
-	if c.Err != nil {
+	cmd = git.New(&currentPath).run(&opts)
+	if cmd.Err != nil {
 		return ""
 	}
-	return strings.TrimSpace(c.Stdout.String())
+	return strings.TrimSpace(cmd.Stdout.String())
 }
 
-// Get git submodule root from `workPath`.
+// Get git submodule root from `workPathP`.
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return empty string if not a submodule dir.
-func GitRootSubmodule(workPathP *string) string {
-	var opts []string = []string{"rev-parse", "--show-superproject-working-tree"}
-	var c = cmd.Run("git", &opts, workPathP)
-	if c.Err != nil {
+func (t *GitCmd) RootSubmodule() string {
+	var (
+		opts = []string{"rev-parse", "--show-superproject-working-tree"}
+		cmd  = t.run(&opts)
+	)
+	if cmd.Err != nil {
 		return ""
 	}
-	return strings.TrimSpace(c.Stdout.String())
+	return strings.TrimSpace(cmd.Stdout.String())
+}
+
+// run "git <optionsP>".
+//   - If <workPathP> is empty/nil, current directory is used.
+//   - Return a cmd.Cmd pointer for execution information.
+func (t *GitCmd) run(optionsP *[]string) *cmd.Cmd {
+	return t.Cmd.New("git", optionsP, t.workPathP).Run()
 }
