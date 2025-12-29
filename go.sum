@@ -1,5 +1,5 @@
-github.com/J-Siu/go-helper/v2 v2.6.5 h1:EVTjsBacgeT0CUvsCXGSxWgZGLo+5kvJz771HiGG7MM=
-github.com/J-Siu/go-helper/v2 v2.6.5/go.mod h1:xMmpBESfx/Z5eab1bTNgu6YpEOvBZUorjNfLdGu4fN4=
+github.com/J-Siu/go-helper/v2 v2.6.10 h1:rAAC0P0AoBBI9cpuq3FpEIdhuNJ6OXledfOmwTxiMiM=
+github.com/J-Siu/go-helper/v2 v2.6.10/go.mod h1:8cC+sNocdV2FB7gJJ5pGiwG+tnlkoepFEsu4wyp6Its=
 github.com/charlievieth/strcase v0.0.5 h1:gV4iXVyD6eI5KdfOV+/vIVCKXZwtCWOmDMcu7Uy00Rs=
 github.com/charlievieth/strcase v0.0.5/go.mod h1:FIOYY1aDBMSIOFqmVomHBpoK+bteGlESRsgsdWjrhx8=
 github.com/edwardrf/symwalk v0.1.0 h1:NAakDFfWD1ef65UDiYREFvWiu1+RqRC2dJIDXJdpFjM=

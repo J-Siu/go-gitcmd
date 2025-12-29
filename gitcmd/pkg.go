@@ -36,15 +36,15 @@ var (
 // New
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Create and Return a new GitCmd pointer
-func New(workPathP *string) *GitCmd {
-	return new(GitCmd).New(workPathP)
+func New(workPath string) *GitCmd {
+	return new(GitCmd).New(workPath)
 }
 
 // Run "git clone <optionsP>".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func Clone(workPathP *string, optionsP *[]string) *cmd.Cmd {
-	return git.New(workPathP).Clone(optionsP)
+func Clone(workPath string, options []string) *cmd.Cmd {
+	return git.New(workPath).Clone(options).Run()
 }
 
 // Check git executable exist.
@@ -57,61 +57,63 @@ func ExecPath() string { return git.ExecPath() }
 // Run "git init".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func Init(workPathP *string) *cmd.Cmd { return git.New(workPathP).Init() }
+func Init(workPath string) *cmd.Cmd { return git.New(workPath).Init().Run() }
 
 // Run "git branch --show-current".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func BranchCurrent(workPathP *string) *cmd.Cmd { return git.New(workPathP).BranchCurrent() }
+func BranchCurrent(workPath string) *cmd.Cmd { return git.New(workPath).BranchCurrent().Run() }
 
 // Run "git pull <optionsP>".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func Pull(workPathP *string, optionsP *[]string) *cmd.Cmd { return git.New(workPathP).Pull(optionsP) }
+func Pull(workPath string, options []string) *cmd.Cmd {
+	return git.New(workPath).Pull(options).Run()
+}
 
 // Run "git push <optionsP>".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func Push(workPathP *string, optionsP *[]string) *cmd.Cmd {
-	return git.New(workPathP).Push(optionsP)
+func Push(workPath string, options []string) *cmd.Cmd {
+	return git.New(workPath).Push(options).Run()
 }
 
 // Run "git remote".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return remotes in string array.
-func Remote(workPathP *string, v bool) *[]string { return git.New(workPathP).Remote(v) }
+func Remote(workPath string, v bool) *[]string { return git.New(workPath).Remote(v) }
 
 // Run "git remote add <name> <gitUrl>".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func RemoteAdd(workPathP *string, name string, gitUrl string) *cmd.Cmd {
-	return git.New(workPathP).RemoteAdd(name, gitUrl)
+func RemoteAdd(workPath string, name string, gitUrl string) *cmd.Cmd {
+	return git.New(workPath).RemoteAdd(name, gitUrl).Run()
 }
 
 // Check if a git remote(by name) exist in workPath.
 //   - If <workPath> is empty/nil, current directory is used.
-func RemoteExist(workPathP *string, name string) bool { return git.New(workPathP).RemoteExist(name) }
+func RemoteExist(workPath string, name string) bool { return git.New(workPath).RemoteExist(name) }
 
 // Run "git remote remove".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - If remote exist Return a cmd.Cmd pointer for execution information.
 //   - If remote does not exit, return nil.(Nothing to remove)
-func RemoteRemove(workPathP *string, name string) *cmd.Cmd {
-	return git.New(workPathP).RemoteRemove(name)
+func RemoteRemove(workPath string, name string) *cmd.Cmd {
+	return git.New(workPath).RemoteRemove(name).Run()
 }
 
 // Run "git remote remove" all git remotes
 //   - If <workPath> is empty/nil, current directory is used.
-func RemoteRemoveAll(workPathP *string) { git.New(workPathP).RemoteRemoveAll() }
+func RemoteRemoveAll(workPath string) { git.New(workPath).RemoteRemoveAll() }
 
 // Get git root from current directory.
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return empty string if not a git dir.
-func Root(workPathP *string) string { return git.New(workPathP).Root() }
+func Root(workPath string) string { return git.New(workPath).Root() }
 
 // Get git submodule root from `workPath`.
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return empty string if not a submodule dir.
-func RootSubmodule(workPathP *string) string { return git.New(workPathP).RootSubmodule() }
+func RootSubmodule(workPath string) string { return git.New(workPath).RootSubmodule() }
 
-func Tag(workPathP *string) *[]string { return git.New(workPathP).Tag() }
+func TagList(workPath string) *[]string { return git.New(workPath).TagList() }

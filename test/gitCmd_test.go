@@ -33,7 +33,7 @@ func TestGitRoot_hasSubmodule(t *testing.T) {
 	//		testDir should be set to a git submodule directory.
 	var testDir string = "submodule_test_1/submodule_test_2/submodule_test_3/submodule_test_4/submodule_test_5"
 	var wanted string = "go-gitcmd"
-	var msg string = path.Base(gitcmd.Root(&testDir))
+	var msg string = path.Base(gitcmd.Root(testDir))
 
 	// Clean up
 	//		git rm -rf submodule_test_1 ../.gitmodules
@@ -50,7 +50,7 @@ func TestGitRoot_hasSubmodule(t *testing.T) {
 func TestGitRoot_fail(t *testing.T) {
 	// Assuming root directory is not a git directory
 	var testDir string = "/"
-	var msg string = gitcmd.Root(&testDir)
+	var msg string = gitcmd.Root(testDir)
 	fmt.Println("Git root of " + testDir + " is `" + msg + "`")
 	if msg != "" {
 		t.Fatalf(`GitRoot(rtSp(%s) = ""`, testDir)

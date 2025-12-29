@@ -19,3 +19,5 @@
   - provide GitCmd struct
 - v2.0.1
   - add Tag()
+- v3.0.0
+  - most struct methods require Run() for execution
