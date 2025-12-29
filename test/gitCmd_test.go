@@ -5,7 +5,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/J-Siu/go-gitcmd/v2/gitcmd"
+	"github.com/J-Siu/go-gitcmd/v3/gitcmd"
 	"github.com/J-Siu/go-helper/v2/cmd"
 	"github.com/J-Siu/go-helper/v2/ezlog"
 )
