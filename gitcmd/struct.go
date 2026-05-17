@@ -158,7 +158,7 @@ func (t *GitCmd) Remote(v bool) *[]string {
 //   - If <workPathP> is empty/nil, current directory is used.
 func (t *GitCmd) RemoteExist(name string) bool {
 	r := t.Remote(false)
-	return str.ArrayContains(r, &name, false)
+	return str.ArrayContains(r, name, false)
 }
 
 // Run "git remote remove".

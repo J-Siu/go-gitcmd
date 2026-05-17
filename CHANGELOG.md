@@ -21,3 +21,5 @@
   - add Tag()
 - v3.0.0
   - most struct methods require Run() for execution
+- v3.0.1
+  - update go-helper/v2
