@@ -116,4 +116,4 @@ func Root(workPath string) string { return git.New(workPath).Root() }
 //   - Return empty string if not a submodule dir.
 func RootSubmodule(workPath string) string { return git.New(workPath).RootSubmodule() }
 
-func TagList(workPath string) *[]string { return git.New(workPath).TagList() }
+func TagList(workPath string) []string { return git.New(workPath).TagList() }

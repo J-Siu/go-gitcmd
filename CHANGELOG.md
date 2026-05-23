@@ -23,3 +23,6 @@
   - most struct methods require Run() for execution
 - v3.0.1
   - update go-helper/v2
+- v3.0.2
+  - update go-helper/v2
+  - TagList(): skip empty line
