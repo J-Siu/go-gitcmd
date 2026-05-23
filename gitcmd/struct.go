@@ -227,14 +227,17 @@ func (t *GitCmd) RootSubmodule() string {
 	return strings.TrimSpace(cmd.Stdout.String())
 }
 
-func (t *GitCmd) TagList() *[]string {
+func (t *GitCmd) TagList() (out []string) {
 	var (
 		cmd = t.Tag(nil).Run()
-		out []string
 	)
-	if cmd.Err != nil {
-		return nil
+	if cmd.Err == nil {
+		for _, l := range strings.Split(strings.Trim(t.Stdout.String(), "\n"), "\n") {
+			l = strings.TrimSpace(l)
+			if l != "" {
+				out = append(out, l)
+			}
+		}
 	}
-	out = strings.Split(strings.Trim(t.Stdout.String(), "\n"), "\n")
-	return &out
+	return out
 }
