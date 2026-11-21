@@ -26,3 +26,5 @@
 - v3.0.2
   - update go-helper/v2
   - TagList(): skip empty line
+- v3.0.3
+  - dep: use go-helper-mini
