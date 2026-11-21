@@ -6,27 +6,22 @@ import (
 	"testing"
 
 	"github.com/J-Siu/go-gitcmd/v3/gitcmd"
-	"github.com/J-Siu/go-helper/v2/cmd"
-	"github.com/J-Siu/go-helper/v2/ezlog"
+	"github.com/J-Siu/go-helper-mini/cmd"
 )
 
 func TestGitRoot_hasSubmodule(t *testing.T) {
-	// Debug = true
-
 	// Pull submodules
 	var args []string
 	var myCmd *cmd.Cmd
 	title := "myCmd"
 	//		git submodule add -f https://github.com/J-Siu/submodule_test_1
 	args = []string{"submodule", "add", "-f", "https://github.com/J-Siu/submodule_test_1"}
-	myCmd = cmd.Run("git", &args, nil)
-	ezlog.Log().N(title).Lm(myCmd).Out()
+	myCmd = cmd.Run("git", args, "")
 	myCmd.Log(title)
 
 	//   git submodule update --recursive --init
 	args = []string{"submodule", "update", "--recursive", "--init"}
-	myCmd = cmd.Run("git", &args, nil)
-	ezlog.Log().N(title).Lm(myCmd).Out()
+	myCmd = cmd.Run("git", args, "")
 	myCmd.Log(title)
 
 	// Test
@@ -38,7 +33,7 @@ func TestGitRoot_hasSubmodule(t *testing.T) {
 	// Clean up
 	//		git rm -rf submodule_test_1 ../.gitmodules
 	args = []string{"rm", "-rf", "submodule_test_1", "../.gitmodules"}
-	myCmd = cmd.Run("git", &args, nil)
+	myCmd = cmd.Run("git", args, "")
 
 	// Result
 	fmt.Println("Git root of " + testDir + " is `" + msg + "`")

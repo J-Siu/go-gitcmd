@@ -26,7 +26,7 @@ THE SOFTWARE.
 package gitcmd
 
 import (
-	"github.com/J-Siu/go-helper/v2/cmd"
+	"github.com/J-Siu/go-helper-mini/cmd"
 )
 
 var (
@@ -81,7 +81,7 @@ func Push(workPath string, options []string) *cmd.Cmd {
 // Run "git remote".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return remotes in string array.
-func Remote(workPath string, v bool) *[]string { return git.New(workPath).Remote(v) }
+func Remote(workPath string, v bool) []string { return git.New(workPath).Remote(v) }
 
 // Run "git remote add <name> <gitUrl>".
 //   - If <workPath> is empty/nil, current directory is used.

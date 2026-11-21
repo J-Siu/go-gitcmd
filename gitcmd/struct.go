@@ -29,9 +29,9 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/J-Siu/go-helper/v2/cmd"
-	"github.com/J-Siu/go-helper/v2/file"
-	"github.com/J-Siu/go-helper/v2/str"
+	"github.com/J-Siu/go-helper-mini/cmd"
+	"github.com/J-Siu/go-helper-mini/file"
+	"github.com/J-Siu/go-helper-mini/str"
 )
 
 type GitCmd struct {
@@ -54,7 +54,7 @@ func (t *GitCmd) New(workPath string) *GitCmd {
 //   - Return a cmd.Cmd pointer for execution information.
 func (t *GitCmd) Run() *cmd.Cmd {
 	t.runArgs = append(t.runArgs, t.options...)
-	return t.Cmd.New("git", &t.runArgs, &t.workPath).Run()
+	return t.Cmd.New("git", t.runArgs, t.workPath).Run()
 }
 
 // -- cmd need Run()
@@ -145,7 +145,7 @@ func (t *GitCmd) ExecPath() string {
 // Run "git remote".
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return remotes in string array.
-func (t *GitCmd) Remote(v bool) *[]string {
+func (t *GitCmd) Remote(v bool) []string {
 	t.runArgs = []string{"remote"}
 	if v {
 		t.options = []string{"-v"}
@@ -158,7 +158,7 @@ func (t *GitCmd) Remote(v bool) *[]string {
 //   - If <workPathP> is empty/nil, current directory is used.
 func (t *GitCmd) RemoteExist(name string) bool {
 	r := t.Remote(false)
-	return str.ArrayContains(r, name, false)
+	return str.ArrayContains(&r, name, false)
 }
 
 // Run "git remote remove".
@@ -174,8 +174,7 @@ func (t *GitCmd) RemoteRemove(name string) *GitCmd {
 // Run "git remote remove" all git remotes
 //   - If <workPathP> is empty/nil, current directory is used.
 func (t *GitCmd) RemoteRemoveAll() {
-	gr := t.Remote(false)
-	for _, r := range *gr {
+	for _, r := range t.Remote(false) {
 		t.RemoteRemove(r).Run()
 	}
 }
@@ -232,7 +231,7 @@ func (t *GitCmd) TagList() (out []string) {
 		cmd = t.Tag(nil).Run()
 	)
 	if cmd.Err == nil {
-		for _, l := range strings.Split(strings.Trim(t.Stdout.String(), "\n"), "\n") {
+		for l := range strings.SplitSeq(strings.Trim(t.Stdout.String(), "\n"), "\n") {
 			l = strings.TrimSpace(l)
 			if l != "" {
 				out = append(out, l)
