@@ -28,3 +28,5 @@
   - TagList(): skip empty line
 - v3.0.3
   - dep: use go-helper-mini
+- v3.0.4
+  - cleanup: return type should be *GitCmd
