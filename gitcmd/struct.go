@@ -35,14 +35,15 @@ import (
 )
 
 type GitCmd struct {
-	*cmd.Cmd
+	cmd.Cmd
 	options  []string
 	runArgs  []string
 	workPath string
 }
 
 func (t *GitCmd) New(workPath string) *GitCmd {
-	t.Cmd = new(cmd.Cmd)
+	t.MyType = "GitCmd"
+	t.Initialized = true
 	t.options = nil
 	t.runArgs = nil
 	t.workPath = workPath
@@ -52,9 +53,10 @@ func (t *GitCmd) New(workPath string) *GitCmd {
 // Run "git <optionsP>".
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func (t *GitCmd) Run() *cmd.Cmd {
+func (t *GitCmd) Run() *GitCmd {
 	t.runArgs = append(t.runArgs, t.options...)
-	return t.Cmd.New("git", t.runArgs, t.workPath).Run()
+	t.Cmd.New("git", t.runArgs, t.workPath).Run()
+	return t
 }
 
 // -- cmd need Run()
@@ -182,9 +184,8 @@ func (t *GitCmd) RemoteRemoveAll() {
 // Get git root from current directory.
 //   - If <workPathP> is empty/nil, current directory is used.
 //   - Return empty string if not a git dir.
-func (t *GitCmd) Root() string {
+func (t *GitCmd) Root() (out string) {
 	var (
-		cmd           *cmd.Cmd
 		git           = new(GitCmd)
 		options       = []string{"--show-toplevel"}
 		currentPath   string
@@ -205,11 +206,11 @@ func (t *GitCmd) Root() string {
 		}
 	}
 	// Check git root
-	cmd = git.New(currentPath).RevParse(options).Run()
-	if cmd.Err != nil {
-		return ""
+	git.New(currentPath).RevParse(options).Run()
+	if git.Err == nil {
+		return strings.TrimSpace(git.Stdout.String())
 	}
-	return strings.TrimSpace(cmd.Stdout.String())
+	return
 }
 
 // Get git submodule root from `workPathP`.

@@ -25,10 +25,6 @@ THE SOFTWARE.
 // Provide git command using exec.Cmd wrapper go-helper/v2/cmd
 package gitcmd
 
-import (
-	"github.com/J-Siu/go-helper-mini/cmd"
-)
-
 var (
 	git = new(GitCmd)
 )
@@ -43,7 +39,7 @@ func New(workPath string) *GitCmd {
 // Run "git clone <optionsP>".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func Clone(workPath string, options []string) *cmd.Cmd {
+func Clone(workPath string, options []string) *GitCmd {
 	return git.New(workPath).Clone(options).Run()
 }
 
@@ -57,24 +53,24 @@ func ExecPath() string { return git.ExecPath() }
 // Run "git init".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func Init(workPath string) *cmd.Cmd { return git.New(workPath).Init().Run() }
+func Init(workPath string) *GitCmd { return git.New(workPath).Init().Run() }
 
 // Run "git branch --show-current".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func BranchCurrent(workPath string) *cmd.Cmd { return git.New(workPath).BranchCurrent().Run() }
+func BranchCurrent(workPath string) *GitCmd { return git.New(workPath).BranchCurrent().Run() }
 
 // Run "git pull <optionsP>".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func Pull(workPath string, options []string) *cmd.Cmd {
+func Pull(workPath string, options []string) *GitCmd {
 	return git.New(workPath).Pull(options).Run()
 }
 
 // Run "git push <optionsP>".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func Push(workPath string, options []string) *cmd.Cmd {
+func Push(workPath string, options []string) *GitCmd {
 	return git.New(workPath).Push(options).Run()
 }
 
@@ -86,7 +82,7 @@ func Remote(workPath string, v bool) []string { return git.New(workPath).Remote(
 // Run "git remote add <name> <gitUrl>".
 //   - If <workPath> is empty/nil, current directory is used.
 //   - Return a cmd.Cmd pointer for execution information.
-func RemoteAdd(workPath string, name string, gitUrl string) *cmd.Cmd {
+func RemoteAdd(workPath string, name string, gitUrl string) *GitCmd {
 	return git.New(workPath).RemoteAdd(name, gitUrl).Run()
 }
 
@@ -98,7 +94,7 @@ func RemoteExist(workPath string, name string) bool { return git.New(workPath).R
 //   - If <workPath> is empty/nil, current directory is used.
 //   - If remote exist Return a cmd.Cmd pointer for execution information.
 //   - If remote does not exit, return nil.(Nothing to remove)
-func RemoteRemove(workPath string, name string) *cmd.Cmd {
+func RemoteRemove(workPath string, name string) *GitCmd {
 	return git.New(workPath).RemoteRemove(name).Run()
 }
 
